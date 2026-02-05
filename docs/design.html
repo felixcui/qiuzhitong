@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>思想理论导航 - 产品设计与原型</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Mermaid -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js"></script>
+    <!-- Google Fonts -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+
+        .serif {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* Party Red & Gold Variables */
+        :root {
+            --party-red: #DE2910;
+            --party-red-dark: #B91C1C;
+            --party-gold: #FFDE00;
+            --party-gold-dark: #F59E0B;
+        }
+
+        .bg-party-red {
+            background-color: var(--party-red);
+        }
+
+        .text-party-red {
+            color: var(--party-red);
+        }
+
+        .border-party-red {
+            border-color: var(--party-red);
+        }
+
+        .bg-party-gold {
+            background-color: var(--party-gold);
+        }
+
+        .text-party-gold {
+            color: var(--party-gold-dark);
+        }
+
+        /* Prototype Device Frame */
+        .device-frame {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background: white;
+            height: 800px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .category-active {
+            background-color: #FEF2F2;
+            /* red-50 */
+            color: #991B1B;
+            /* red-800 */
+            border-right: 3px solid #DE2910;
+        }
+    </style>
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.2s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Navigation Bar for the Document -->
+    <nav class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold serif text-party-red">
+                        <i class="fas fa-star mr-2 text-yellow-400"></i>思想理论导航
+                    </span>
+                    <span class="ml-4 px-2 py-1 text-xs font-semibold bg-gray-100 rounded text-gray-500">Design Document
+                        & Prototype</span>
+                </div>
+                <div class="flex items-center space-x-8">
+                    <button onclick="switchTab('design')" id="tab-design"
+                        class="px-3 py-2 border-b-2 border-party-red text-party-red font-medium">设计体系 & PRD</button>
+                    <button onclick="switchTab('prototype')" id="tab-prototype"
+                        class="px-3 py-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium">交互原型
+                        (V1.0)</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Tab: Design System & PRD -->
+        <div id="view-design" class="space-y-12 animate-fade-in">
+
+            <!-- 1. Project Overview & Personas -->
+            <section class="bg-white p-8 rounded-lg shadow-sm border border-gray-100">
+                <h2 class="text-3xl font-bold mb-6 serif border-l-4 border-party-red pl-4">1. 项目与用户概览</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-3 text-gray-700">项目背景</h3>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            针对思想理论工作者和学习者资源分散、检索低效的痛点，构建一个专注于“思想理论”领域的垂直导航网站。
+                            <br>
+                            核心价值：<strong>极简体验、权威收录、高效直达</strong>。
+                        </p>
+                        <div class="bg-red-50 p-4 rounded-md border border-red-100">
+                            <h4 class="font-bold text-red-800 text-sm mb-2">设计关键词</h4>
+                            <div class="flex gap-2">
+                                <span class="px-3 py-1 bg-white text-red-700 text-xs rounded-full shadow-sm">红色基因</span>
+                                <span class="px-3 py-1 bg-white text-red-700 text-xs rounded-full shadow-sm">严谨学术</span>
+                                <span class="px-3 py-1 bg-white text-red-700 text-xs rounded-full shadow-sm">极简高效</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-3 text-gray-700">核心用户画像</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-gray-500">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="font-bold">理论研究员 (老张)</h4>
+                                    <p class="text-sm text-gray-500">45岁，社科院研究员。需每日高频访问特定权威网站，厌恶广告干扰。</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-gray-500">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="font-bold">马哲研究生 (小李)</h4>
+                                    <p class="text-sm text-gray-500">24岁，硕士在读。需探索新知识，进行专题文献综述。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Flows -->
+            <section class="bg-white p-8 rounded-lg shadow-sm border border-gray-100">
+                <h2 class="text-3xl font-bold mb-6 serif border-l-4 border-party-red pl-4">2. 核心业务流程</h2>
+                <div class="mermaid">
+                    graph TD
+                    Start([用户访问]) --> Home[首页加载]
+                    Home --> Action{用户行为}
+
+                    Action -->|侧边栏/滚动| Browse[分类浏览]
+                    Browse --> HoverCard[查看卡片信息]
+
+                    Action -->|关键词搜索| Search[实时过滤]
+                    Search --> Results[展示结果列表]
+
+                    HoverCard --> Click{点击}
+                    Results --> Click
+
+                    Click -->|直接访问| OutLink[新标签页打开]
+                    Click -->|查看详情| DetailPage[进入网站详情页]
+
+                    DetailPage --> CheckTags[查看标签/介绍]
+                    CheckTags -->|确认价值| OutLink2[新标签页打开]
+                    CheckTags -->|返回| Home
+                </div>
+            </section>
+
+            <!-- 3. Design System -->
+            <section class="bg-white p-8 rounded-lg shadow-sm border border-gray-100">
+                <h2 class="text-3xl font-bold mb-6 serif border-l-4 border-party-red pl-4">3. 视觉风格定义 (UI Kit)</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Colors -->
+                    <div>
+                        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Color Palette</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-16 h-16 rounded shadow-sm bg-party-red"></div>
+                                <div>
+                                    <p class="font-mono text-sm font-bold">#DE2910</p>
+                                    <p class="text-xs text-gray-500">China Red (Primary)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-16 h-16 rounded shadow-sm bg-party-red-dark"></div>
+                                <div>
+                                    <p class="font-mono text-sm font-bold">#B91C1C</p>
+                                    <p class="text-xs text-gray-500">Deep Red (Active/Hover)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-16 h-16 rounded shadow-sm bg-gray-800"></div>
+                                <div>
+                                    <p class="font-mono text-sm font-bold">#1F2937</p>
+                                    <p class="text-xs text-gray-500">Ink Black (Text)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-16 h-16 rounded shadow-sm bg-gray-50 border border-gray-200"></div>
+                                <div>
+                                    <p class="font-mono text-sm font-bold">#F9FAFB</p>
+                                    <p class="text-xs text-gray-500">Paper White (Background)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Typography -->
+                    <div>
+                        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Typography</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <h1 class="text-4xl font-bold serif text-gray-900 border-b pb-2">标题 Heading</h1>
+                                <p class="text-xs text-gray-400 mt-1">Noto Serif SC / 700 / 36px</p>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-medium text-gray-800">小标题 & 正文重点</h3>
+                                <p class="text-xs text-gray-400 mt-1">Noto Sans SC / 500 / 20px</p>
+                            </div>
+                            <div>
+                                <p class="text-base text-gray-600 leading-relaxed">
+                                    正文内容展示。思想理论导航网站致力于为学者提供最便捷的学术资源访问路径。设计风格追求极简、严肃与实用并重。
+                                </p>
+                                <p class="text-xs text-gray-400 mt-1">Noto Sans SC / 400 / 16px</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Components -->
+                    <div>
+                        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Core Components</h3>
+
+                        <!-- Card -->
+                        <div
+                            class="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer mb-4 relative overflow-hidden group flex items-center h-20">
+                            <div
+                                class="w-10 h-10 bg-red-50 text-red-600 rounded flex items-center justify-center text-lg font-bold mr-3 flex-shrink-0">
+                                求
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-bold text-gray-900 truncate">求是网</h4>
+                            </div>
+                            <div class="ml-2 text-gray-300">
+                                <i class="fas fa-external-link-alt text-sm"></i>
+                            </div>
+                        </div>
+
+                        <!-- Button -->
+                        <button
+                            class="w-full bg-party-red text-white py-2 px-4 rounded hover:bg-red-800 transition-colors flex items-center justify-center">
+                            <span>立即访问</span>
+                            <i class="fas fa-external-link-alt ml-2 text-xs opacity-80"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Tab: Interactive Prototype -->
+        <div id="view-prototype" class="hidden animate-fade-in">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold serif text-gray-800">Web端高保真原型</h2>
+                <div class="text-sm text-gray-500">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    尝试点击左侧分类、搜索“学术”、或点击卡片详情
+                </div>
+            </div>
+
+            <!-- THE DEVICE/BROWSER FRAME -->
+            <div class="device-frame relative bg-gray-50">
+
+                <!-- Prototype Header -->
+                <header
+                    class="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-6 flex-shrink-0 z-20 shadow-sm relative">
+                    <div class="flex items-center">
+                        <div
+                            class="w-8 h-8 bg-party-red text-white rounded flex items-center justify-center mr-3 font-serif font-bold text-xl">
+                            <i class="fas fa-book-open text-sm"></i>
+                        </div>
+                        <span class="text-xl font-bold serif tracking-wide text-gray-900">思想理论导航</span>
+                    </div>
+
+                    <!-- Search Bar -->
+                    <div class="flex-1 max-w-xl mx-8">
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i
+                                    class="fas fa-search text-gray-400 group-focus-within:text-party-red transition-colors"></i>
+                            </div>
+                            <input type="text" id="proto-search-input"
+                                class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-party-red focus:border-party-red sm:text-sm transition-all shadow-sm"
+                                placeholder="搜索网站名称、描述或分类 (例如: 学术, 党刊)...">
+                            <div id="proto-search-clear"
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer hidden"
+                                onclick="clearSearch()">
+                                <i class="fas fa-times-circle text-gray-400 hover:text-gray-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-4 text-sm font-medium text-gray-600">
+                        <a href="#" class="hover:text-party-red">关于我们</a>
+                        <a href="#"
+                            class="px-3 py-1.5 bg-gray-100 rounded text-gray-700 hover:bg-gray-200 transition-colors">提交收录</a>
+                    </div>
+                </header>
+
+                <!-- Prototype Body -->
+                <div class="flex flex-1 overflow-hidden" id="app-container">
+
+                    <!-- Sidebar -->
+                    <aside class="w-64 bg-white border-r border-gray-200 overflow-y-auto flex-shrink-0">
+                        <div class="py-4">
+                            <div class="px-6 mb-2 text-xs font-bold text-gray-400 uppercase tracking-wider">资源分类</div>
+                            <nav class="space-y-1" id="proto-sidebar">
+                                <!-- Categories injected by JS -->
+                            </nav>
+                        </div>
+                    </aside>
+
+                    <!-- Main Content -->
+                    <main class="flex-1 overflow-y-auto bg-gray-50 relative scroll-smooth" id="proto-main">
+                        <div class="max-w-5xl mx-auto px-8 py-8 min-h-full" id="proto-content">
+                            <!-- Sites Cards Area injected by JS -->
+                        </div>
+                    </main>
+
+                    <!-- Detail View (Overlay/Page) -->
+                    <div id="proto-detail-view"
+                        class="absolute inset-0 bg-gray-50 z-30 transform translate-x-full transition-transform duration-300 overflow-y-auto">
+                        <!-- Detail Content injected by JS -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Data & Logic -->
+    <script>
+        // MOCK DATA
+        const categories = [
+            { id: 'cat-1', name: '马列经典', icon: 'fas fa-book' },
+            { id: 'cat-2', name: '党报党刊', icon: 'fas fa-newspaper' },
+            { id: 'cat-3', name: '中央级媒体', icon: 'fas fa-bullhorn' },
+            { id: 'cat-4', name: '学术机构', icon: 'fas fa-university' },
+            { id: 'cat-5', name: '思想理论库', icon: 'fas fa-database' },
+        ];
+
+        const sites = [
+            {
+                id: 1, name: '马克思主义基本原理概论', url: '#', category: '马列经典',
+                desc: '系统阐述马克思主义基本原理的权威教材与学习资源。',
+                tags: ['教材', '基础理论'], icon: '马'
+            },
+            {
+                id: 2, name: '中文马克思主义文库', url: '#', category: '马列经典',
+                desc: '收录了最全的马克思主义经典作家著作，是一个志愿性质的公益网站。',
+                tags: ['公益', '全文检索', '历史档案'], icon: '文'
+            },
+            {
+                id: 3, name: '求是网', url: 'http://www.qstheory.cn/', category: '党报党刊',
+                desc: '中国共产党中央委员会机关刊《求是》杂志主办的理论宣传研究平台。',
+                tags: ['权威', '党建', '核心期刊'], icon: '求'
+            },
+            {
+                id: 4, name: '人民日报理论版', url: '#', category: '党报党刊',
+                desc: '人民日报重要理论文章发布平台，反映中央精神与理论动态。',
+                tags: ['权威', '时政'], icon: '人'
+            },
+            {
+                id: 5, name: '新华网·理论', url: '#', category: '中央级媒体',
+                desc: '新华社主办的理论频道，聚合全网理论热点。',
+                tags: ['新闻', '聚合'], icon: '新'
+            },
+            {
+                id: 6, name: '中国社会科学院', url: '#', category: '学术机构',
+                desc: '中国哲学社会科学研究的最高学术机构和综合研究中心。',
+                tags: ['智库', '科研', '官方'], icon: '社'
+            },
+            {
+                id: 7, name: '国家哲学社会科学文献中心', url: '#', category: '思想理论库',
+                desc: '提供中文学术期刊、集刊、学位论文等资源的免费查询与下载。',
+                tags: ['数据库', '免费', '论文'], icon: '文'
+            },
+            {
+                id: 8, name: '中国知网 (CNKI)', url: '#', category: '思想理论库',
+                desc: '全球领先的数字出版平台，覆盖各类学术期刊、博士硕士论文。',
+                tags: ['数据库', '收费', '全面'], icon: '知'
+            }
+        ];
+
+        // LOGIC
+        let currentDetail = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            mermaid.initialize({ startOnLoad: true });
+            renderPrototype();
+
+            // Search Listener
+            const searchInput = document.getElementById('proto-search-input');
+            let debounceTimer;
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    handleSearch(e.target.value);
+                }, 300);
+
+                const clearBtn = document.getElementById('proto-search-clear');
+                if (e.target.value.length > 0) clearBtn.classList.remove('hidden');
+                else clearBtn.classList.add('hidden');
+            });
+        });
+
+        // --- Render Functions ---
+
+        function renderPrototype() {
+            renderSidebar();
+            renderContent(sites); // Initial render details
+        }
+
+        function renderSidebar() {
+            const sidebar = document.getElementById('proto-sidebar');
+            sidebar.innerHTML = categories.map(cat => `
+                <a href="#section-${cat.name}" onclick="scrollToCategory('${cat.name}', event)" class="group flex items-center px-6 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 border-r-4 border-transparent hover:border-gray-200 transition-colors" id="link-${cat.name}">
+                    <i class="${cat.icon} mr-3 text-gray-400 group-hover:text-gray-500 w-4 text-center"></i>
+                    ${cat.name}
+                </a>
+            `).join('');
+        }
+
+        function renderContent(siteList, isSearch = false) {
+            const container = document.getElementById('proto-content');
+
+            if (siteList.length === 0) {
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-64 text-gray-500">
+                        <i class="fas fa-search-minus text-4xl mb-4 text-gray-300"></i>
+                        <p>未找到相关网站</p>
+                    </div>
+                `;
+                return;
+            }
+
+            if (isSearch) {
+                container.innerHTML = `
+                    <div class="mb-6">
+                        <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-search text-party-red mr-2"></i>
+                            搜索结果 (${siteList.length})
+                        </h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${siteList.map(site => createCardHTML(site)).join('')}
+                    </div>
+                 `;
+            } else {
+                // Group by Category
+                container.innerHTML = categories.map(cat => {
+                    const catSites = siteList.filter(s => s.category === cat.name);
+                    if (catSites.length === 0) return '';
+                    return `
+                        <div id="section-${cat.name}" class="mb-10 scroll-mt-6">
+                            <h2 class="text-xl font-bold text-gray-800 mb-4 pb-2 border-b border-gray-200 flex items-center">
+                                <span class="bg-party-red w-1 h-6 mr-3 rounded-full"></span>
+                                ${cat.name}
+                            </h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                ${catSites.map(site => createCardHTML(site)).join('')}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function createCardHTML(site) {
+            return `
+                <div onclick="openDetail(${site.id})" class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-lg transition-all transform hover:-translate-y-1 cursor-pointer group flex items-center relative hover:z-20 h-20">
+
+                    <!-- Tooltip: Full Name -->
+                <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max max-w-xs hidden group-hover:block z-30 pointer-events-none">
+                    <div class="bg-gray-900/95 text-white text-xs rounded py-2 px-3 shadow-xl relative text-center backdrop-blur-sm animate-fade-in-up">
+                        ${site.name}
+                        <!-- Triangle Arrow -->
+                        <div class="absolute top-full left-1/2 transform -translate-x-1/2 -mt-px border-4 border-transparent border-t-gray-900/95"></div>
+                    </div>
+                </div>
+
+                <div class="w-10 h-10 bg-red-50 text-party-red font-serif font-bold text-lg rounded-md flex items-center justify-center flex-shrink-0 shadow-sm border border-red-100 mr-4">
+                    ${site.icon}
+                </div>
+
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-base font-bold text-gray-900 group-hover:text-party-red transition-colors truncate" title="${site.name}">${site.name}</h3>
+                </div>
+
+                <div class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <a href="${site.url}" target="_blank" onclick="event.stopPropagation()" class="text-gray-300 hover:text-party-red p-2 rounded-full hover:bg-red-50 transition-colors">
+                        <i class="fas fa-external-link-alt text-sm"></i>
+                    </a>
+                </div>
+            </div>
+            `;
+        }
+
+        // --- Interactions ---
+
+        function handleSearch(query) {
+            if (!query) {
+                renderContent(sites);
+                // Reset sidebar styles
+                return;
+            }
+            const lowerQ = query.toLowerCase();
+            const filtered = sites.filter(s =>
+                s.name.toLowerCase().includes(lowerQ) ||
+                s.desc.toLowerCase().includes(lowerQ) ||
+                s.tags.some(t => t.toLowerCase().includes(lowerQ))
+            );
+            renderContent(filtered, true);
+        }
+
+        function clearSearch() {
+            document.getElementById('proto-search-input').value = '';
+            document.getElementById('proto-search-clear').classList.add('hidden');
+            renderContent(sites);
+        }
+
+        function scrollToCategory(catName, event) {
+            if (event) event.preventDefault();
+
+            // Reset Sidebar active
+            document.querySelectorAll('#proto-sidebar a').forEach(el => {
+                el.classList.remove('category-active', 'bg-red-50', 'text-party-red-dark');
+                el.classList.add('text-gray-600', 'border-transparent');
+            });
+            const activeLink = document.getElementById(`link - ${catName} `);
+            activeLink.classList.add('category-active');
+            activeLink.classList.remove('text-gray-600', 'border-transparent');
+
+            // Scroll Main
+            const target = document.getElementById(`section - ${catName} `);
+            if (target) target.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openDetail(id) {
+            const site = sites.find(s => s.id === id);
+            if (!site) return;
+            currentDetail = site;
+
+            const detailView = document.getElementById('proto-detail-view');
+
+            detailView.innerHTML = `
+                < div class="max-w-4xl mx-auto min-h-full bg-white shadow-2xl border-l border-gray-200 flex flex-col" >
+                    < !--Nav -->
+                    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white/95 backdrop-blur z-10">
+                        <button onclick="closeDetail()" class="text-gray-500 hover:text-gray-900 flex items-center transition-colors">
+                            <i class="fas fa-arrow-left mr-2"></i> 返回列表
+                        </button>
+                        <div class="flex space-x-2">
+                             <button class="text-gray-400 hover:text-gray-600 p-2"><i class="far fa-heart"></i></button>
+                             <button class="text-gray-400 hover:text-gray-600 p-2"><i class="fas fa-share-alt"></i></button>
+                        </div>
+                    </div>
+
+                    <!--Content -->
+                <div class="p-8 md:p-12">
+                    <div class="flex flex-col md:flex-row items-center md:items-start mb-10">
+                        <div class="w-24 h-24 bg-red-50 text-party-red rounded-xl flex items-center justify-center text-4xl font-serif font-bold shadow-sm mb-6 md:mb-0 md:mr-8 border border-red-100">
+                            ${site.icon}
+                        </div>
+                        <div class="text-center md:text-left flex-1">
+                            <div class="flex items-center justify-center md:justify-start mb-2">
+                                <span class="px-2 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded mr-3">${site.category}</span>
+                                <h1 class="text-3xl font-bold text-gray-900 serif">${site.name}</h1>
+                            </div>
+                            <p class="text-lg text-gray-500 mb-6">${site.desc}</p>
+
+                            <div class="flex flex-wrap justify-center md:justify-start gap-3 mb-8">
+                                ${site.tags.map(tag => `<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm"># ${tag}</span>`).join('')}
+                            </div>
+
+                            <a href="${site.url}" target="_blank" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-party-red hover:bg-red-800 shadow-lg transform transition hover:-translate-y-0.5">
+                                立即访问网站 <i class="fas fa-external-link-alt ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-100 pt-10">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-party-red pl-3">详细介绍</h3>
+                        <div class="prose prose-red text-gray-600 max-w-none">
+                            <p>${site.name} 是该领域内的核心权威资源...</p>
+                            <p>(此处为详细描述占位符，通常包含网站的历史沿革、主要栏目介绍、使用指南等内容。)</p>
+                            <p class="mt-4 p-4 bg-gray-50 rounded text-sm text-gray-500 italic border border-gray-200">
+                                <i class="fas fa-quote-left mr-2 text-gray-300"></i>
+                                思想是行动的先导，理论是实践的指南。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-12 p-6 bg-red-50 rounded-lg border border-red-100 flex items-start">
+                        <i class="fas fa-info-circle text-party-red text-xl mr-4 mt-1"></i>
+                        <div>
+                            <h4 class="font-bold text-red-900 mb-1">访问提示</h4>
+                            <p class="text-sm text-red-800 opacity-80">部分学术数据库需要校园网环境或机构IP登录方可下载全文。</p>
+                        </div>
+                    </div>
+                </div>
+                </div >
+            `;
+
+            // Animate In
+            detailView.classList.remove('translate-x-full');
+        }
+
+        function closeDetail() {
+            const detailView = document.getElementById('proto-detail-view');
+            detailView.classList.add('translate-x-full');
+            currentDetail = null;
+        }
+
+        // --- Tabs ---
+
+        function switchTab(tab) {
+            const viewDesign = document.getElementById('view-design');
+            const viewPrototype = document.getElementById('view-prototype');
+            const btnDesign = document.getElementById('tab-design');
+            const btnPrototype = document.getElementById('tab-prototype');
+
+            if (tab === 'design') {
+                viewDesign.classList.remove('hidden');
+                viewPrototype.classList.add('hidden');
+                btnDesign.classList.add('border-party-red', 'text-party-red');
+                btnDesign.classList.remove('border-transparent', 'text-gray-500');
+                btnPrototype.classList.remove('border-party-red', 'text-party-red');
+                btnPrototype.classList.add('border-transparent', 'text-gray-500');
+            } else {
+                viewDesign.classList.add('hidden');
+                viewPrototype.classList.remove('hidden');
+                btnPrototype.classList.add('border-party-red', 'text-party-red');
+                btnPrototype.classList.remove('border-transparent', 'text-gray-500');
+                btnDesign.classList.remove('border-party-red', 'text-party-red');
+                btnDesign.classList.add('border-transparent', 'text-gray-500');
+            }
+        }
+    </script>
+</body>
+
+</html>
