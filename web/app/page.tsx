@@ -221,7 +221,7 @@ const AboutModal = ({ onClose }: { onClose: () => void }) => {
 
         <div className="space-y-6 text-gray-600 leading-relaxed">
           <p>
-            <strong className="text-gray-900">求知通 (Qiuzhi Tong)</strong> 是一个专注于思想理论领域的垂直导航平台。
+            <strong className="text-gray-900">求知汇 (Qiuzhi Tong)</strong> 是一个专注于思想理论领域的垂直导航平台。
           </p>
 
           <div className="bg-red-50 border border-red-100 rounded-lg p-4">
@@ -445,7 +445,7 @@ export default function Home() {
           <div className="w-8 h-8 bg-party-red text-white rounded flex items-center justify-center mr-3 font-serif font-bold text-xl shadow-sm">
             <BookOpen className="w-4 h-4" />
           </div>
-          <span className="text-xl font-bold font-serif tracking-wide text-gray-900 hidden sm:block">求知通</span>
+          <span className="text-xl font-bold font-serif tracking-wide text-gray-900 hidden sm:block">求知汇</span>
         </div>
 
         <div className="flex-1"></div>
