@@ -18,7 +18,7 @@ const notoSans = Noto_Sans_SC({
 });
 
 export const metadata: Metadata = {
-  title: "求知汇 | Qiuzhi Tong",
+  title: "求知汇 | Qiuzhi Hui",
   description: "专注于思想理论领域的垂直导航平台，汇集高质量理论资源。",
 };
 

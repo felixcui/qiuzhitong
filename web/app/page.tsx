@@ -221,7 +221,7 @@ const AboutModal = ({ onClose }: { onClose: () => void }) => {
 
         <div className="space-y-6 text-gray-600 leading-relaxed">
           <p>
-            <strong className="text-gray-900">求知汇 (Qiuzhi Tong)</strong> 是一个专注于思想理论领域的垂直导航平台。
+            <strong className="text-gray-900">求知汇 (Qiuzhi Hui)</strong> 是一个专注于思想理论领域的垂直导航平台。
           </p>
 
           <div className="bg-red-50 border border-red-100 rounded-lg p-4">

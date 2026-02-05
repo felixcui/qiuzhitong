@@ -6,27 +6,43 @@ import { ArrowUp } from "lucide-react";
 export const ScrollToTop = () => {
     const [isVisible, setIsVisible] = useState(false);
 
-    const toggleVisibility = () => {
-        if (window.pageYOffset > 300) {
-            setIsVisible(true);
-        } else {
-            setIsVisible(false);
-        }
-    };
+    useEffect(() => {
+        // Try to find the app-specific scroll container, fallback to window
+        const container = document.getElementById("scroll-container") || window;
+
+        const toggleVisibility = () => {
+            let scrollTop = 0;
+            if (container === window) {
+                scrollTop = window.pageYOffset;
+            } else {
+                scrollTop = (container as HTMLElement).scrollTop;
+            }
+
+            if (scrollTop > 300) {
+                setIsVisible(true);
+            } else {
+                setIsVisible(false);
+            }
+        };
+
+        // Attach listener
+        container.addEventListener("scroll", toggleVisibility);
+
+        // Initial check
+        toggleVisibility();
+
+        return () => {
+            container.removeEventListener("scroll", toggleVisibility);
+        };
+    }, []);
 
     const scrollToTop = () => {
-        window.scrollTo({
+        const container = document.getElementById("scroll-container") || window;
+        container.scrollTo({
             top: 0,
             behavior: "smooth",
         });
     };
-
-    useEffect(() => {
-        window.addEventListener("scroll", toggleVisibility);
-        return () => {
-            window.removeEventListener("scroll", toggleVisibility);
-        };
-    }, []);
 
     if (!isVisible) {
         return null;
