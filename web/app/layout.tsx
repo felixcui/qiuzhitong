@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Serif_SC, Noto_Sans_SC } from "next/font/google";
-import { ScrollToTop } from "@/components/ScrollToTop";
+import { ScrollToTop } from "../components/ScrollToTop";
 import "./globals.css";
 
 const notoSerif = Noto_Serif_SC({

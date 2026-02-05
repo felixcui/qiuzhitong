@@ -30,20 +30,38 @@ interface Site {
 }
 
 // --- Icons Mapping ---
-const getCategoryIcon = (category: string) => {
-  if (category.includes('经典') || category.includes('著作')) return <BookOpen className="w-4 h-4" />;
-  if (category.includes('报') || category.includes('刊') || category.includes('新闻')) return <Newspaper className="w-4 h-4" />;
-  if (category.includes('资料') || category.includes('检索') || category.includes('数据库') || category.includes('图书馆')) return <Database className="w-4 h-4" />;
-  if (category.includes('院') || category.includes('校') || category.includes('党校') || category.includes('研究')) return <Landmark className="w-4 h-4" />;
-  if (category.includes('课') || category.includes('讲座')) return <Files className="w-4 h-4" />;
-  return <Star className="w-4 h-4" />;
+// --- Icons Mapping ---
+const getCategoryIconComponent = (category: string) => {
+  if (category.includes('经典') || category.includes('著作')) return BookOpen;
+  if (category.includes('报') || category.includes('刊') || category.includes('新闻')) return Newspaper;
+  if (category.includes('资料') || category.includes('检索') || category.includes('数据库') || category.includes('图书馆')) return Database;
+  if (category.includes('院') || category.includes('校') || category.includes('党校') || category.includes('研究')) return Landmark;
+  if (category.includes('课') || category.includes('讲座')) return Files;
+  return Star;
 };
 
-const getSiteIconChar = (name: string) => {
-  return name.charAt(0);
+const getCategoryIcon = (category: string) => {
+  const Icon = getCategoryIconComponent(category);
+  return <Icon className="w-4 h-4" />;
 };
 
 // --- Components ---
+
+const SiteIcon = ({ site, size = "normal" }: { site: Site, size?: "normal" | "large" }) => {
+  const Icon = getCategoryIconComponent(site.category);
+
+  const containerClass = size === 'large'
+    ? "w-24 h-24 rounded-2xl mb-6 border border-red-100 shadow-sm"
+    : "w-10 h-10 rounded-md mr-4 border border-red-100 shadow-sm";
+
+  const iconSizeClass = size === 'large' ? "w-10 h-10" : "w-5 h-5";
+
+  return (
+    <div className={clsx("bg-red-50 text-party-red flex items-center justify-center flex-shrink-0", containerClass)}>
+      <Icon className={iconSizeClass} />
+    </div>
+  );
+};
 
 const Sidebar = ({
   categories,
@@ -84,9 +102,7 @@ const SiteCard = ({ site, onClick }: { site: Site, onClick: () => void }) => {
       className="group relative bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer flex items-center h-20"
     >
       {/* Icon */}
-      <div className="w-10 h-10 bg-red-50 text-party-red font-serif font-bold text-lg rounded-md flex items-center justify-center flex-shrink-0 shadow-sm border border-red-100 mr-4">
-        {getSiteIconChar(site.name)}
-      </div>
+      <SiteIcon site={site} />
 
       {/* Content */}
       <div className="flex-1 min-w-0">
@@ -141,9 +157,7 @@ const DetailModal = ({ site, onClose }: { site: Site | null, onClose: () => void
         {/* Body */}
         <div className="p-8 md:p-12 flex-1">
           <div className="flex flex-col items-center text-center mb-10">
-            <div className="w-24 h-24 bg-red-50 text-party-red rounded-2xl flex items-center justify-center text-4xl font-serif font-bold shadow-sm mb-6 border border-red-100">
-              {getSiteIconChar(site.name)}
-            </div>
+            <SiteIcon site={site} size="large" />
 
             <span className="px-3 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-full mb-4">
               {site.category}

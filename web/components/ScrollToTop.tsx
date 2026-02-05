@@ -3,60 +3,44 @@
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
 
-export function ScrollToTop() {
+export const ScrollToTop = () => {
     const [isVisible, setIsVisible] = useState(false);
 
-    useEffect(() => {
-        const toggleVisibility = () => {
-            const container = document.getElementById('scroll-container');
-            let scrollTop = 0;
-
-            if (container) {
-                scrollTop = container.scrollTop;
-            } else {
-                scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
-            }
-
-            if (scrollTop > 100) {
-                setIsVisible(true);
-            } else {
-                setIsVisible(false);
-            }
-        };
-
-        const container = document.getElementById('scroll-container');
-        const target = container || window;
-
-        target.addEventListener("scroll", toggleVisibility);
-        // Initial check
-        toggleVisibility();
-
-        return () => target.removeEventListener("scroll", toggleVisibility);
-    }, []);
-
-    const scrollToTop = () => {
-        const container = document.getElementById('scroll-container');
-        if (container) {
-            container.scrollTo({
-                top: 0,
-                behavior: "smooth",
-            });
+    const toggleVisibility = () => {
+        if (window.pageYOffset > 300) {
+            setIsVisible(true);
         } else {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-            });
+            setIsVisible(false);
         }
     };
 
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    };
+
+    useEffect(() => {
+        window.addEventListener("scroll", toggleVisibility);
+        return () => {
+            window.removeEventListener("scroll", toggleVisibility);
+        };
+    }, []);
+
+    if (!isVisible) {
+        return null;
+    }
+
     return (
-        <button
-            onClick={scrollToTop}
-            className={`fixed bottom-12 right-12 w-12 h-12 rounded-xl bg-white text-gray-400 shadow-[0_4px_20px_rgba(0,0,0,0.08)] border border-gray-100 hover:text-red-600 hover:border-red-100 hover:shadow-lg transition-all duration-300 z-[100] focus:outline-none flex items-center justify-center group ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
-                }`}
-            aria-label="回到顶部"
-        >
-            <ArrowUp className="w-6 h-6 stroke-[2] group-hover:-translate-y-0.5 transition-transform duration-300" />
-        </button>
+        <div className="fixed bottom-8 right-8 z-50">
+            <button
+                onClick={scrollToTop}
+                className="p-3 bg-party-red text-white rounded-full shadow-lg hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-party-red"
+                aria-label="Scroll to top"
+            >
+                <ArrowUp className="w-6 h-6" />
+            </button>
+        </div>
     );
-}
+};
