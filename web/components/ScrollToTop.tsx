@@ -8,7 +8,10 @@ export const ScrollToTop = () => {
 
     useEffect(() => {
         // Try to find the app-specific scroll container, fallback to window
-        const container = document.getElementById("scroll-container") || window;
+        // The main scroll area in page.tsx has id "main-scroll"
+        // Retrying slightly later might be needed if hydration is slow, but usually useEffect is fine.
+        const getContainer = () => document.getElementById("main-scroll") || window;
+        const container = getContainer();
 
         const toggleVisibility = () => {
             let scrollTop = 0;
@@ -37,7 +40,7 @@ export const ScrollToTop = () => {
     }, []);
 
     const scrollToTop = () => {
-        const container = document.getElementById("scroll-container") || window;
+        const container = document.getElementById("main-scroll") || window;
         container.scrollTo({
             top: 0,
             behavior: "smooth",
@@ -49,13 +52,13 @@ export const ScrollToTop = () => {
     }
 
     return (
-        <div className="fixed bottom-8 right-8 z-50">
+        <div className="fixed bottom-8 right-8 z-50 animate-fade-in-up">
             <button
                 onClick={scrollToTop}
-                className="p-3 bg-party-red text-white rounded-full shadow-lg hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-party-red"
+                className="p-3 bg-party-red text-white rounded-full shadow-lg hover:bg-party-red-hover hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-party-red"
                 aria-label="Scroll to top"
             >
-                <ArrowUp className="w-6 h-6" />
+                <ArrowUp className="w-5 h-5" />
             </button>
         </div>
     );

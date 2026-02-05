@@ -1,57 +1,95 @@
 @import "tailwindcss";
 
 :root {
-  --background: #F9FAFB; /* gray-50 */
-  --foreground: #1F2937; /* gray-800 */
-  
-  --party-red: #DE2910;
-  --party-red-dark: #B91C1C;
-  --party-gold: #FFDE00;
-  --party-gold-dark: #F59E0B;
+    /* Ultra-refined Palette */
+    --background: #F9FAFB;
+    --foreground: #111827;
+    /* Darker gray for better contrast */
+
+    /* Modern Party Red - slightly deeper, more authoritative */
+    --party-red: #D91F11;
+    --party-red-hover: #B91C1C;
+    --party-red-soft: #FEF2F2;
+    /* red-50 */
+
+    /* Accent Gold - adjusted for harmony */
+    --party-gold: #F59E0B;
+
+    /* Neutral scale for UI elements */
+    --border-color: #E5E7EB;
+    --text-secondary: #6B7280;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-party-red: var(--party-red);
-  --color-party-red-dark: var(--party-red-dark);
-  --color-party-gold: var(--party-gold);
-  --color-party-gold-dark: var(--party-gold-dark);
-  
-  --font-serif: var(--font-noto-serif), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-sans: var(--font-noto-sans), ui-sans-serif, system-ui, sans-serif;
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-party-red: var(--party-red);
+    --color-party-red-hover: var(--party-red-hover);
+    --color-party-red-soft: var(--party-red-soft);
+    --color-party-gold: var(--party-gold);
+    --color-border-subtle: var(--border-color);
+    --color-text-secondary: var(--text-secondary);
+
+    --font-serif: var(--font-noto-serif), "Songti SC", "Noto Serif SC", STSong, serif;
+    --font-sans: var(--font-noto-sans), -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+
+    --shadow-soft: 0 2px 8px -2px rgba(0, 0, 0, 0.05);
+    --shadow-card: 0 1px 2px -1px rgba(0, 0, 0, 0.05), 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    --shadow-card-hover: 0 10px 30px -5px rgba(222, 41, 16, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+    --shadow-float: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-/* Custom Scrollbar */
+/* Base Reset & Typography */
+body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+    background-color: rgba(222, 41, 16, 0.15);
+    color: var(--party-red);
+}
+
+/* Custom Scrollbar - Minimalist */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 4px;
+    background: #D1D5DB;
+    border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #a8a8a8;
+    background: #9CA3AF;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
+/* Utility Classes */
+.glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
+.text-balance {
+    text-wrap: balance;
+}
+
+/* Animations */
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(5px);
+        transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -59,5 +97,21 @@ body {
 }
 
 .animate-fade-in-up {
-    animation: fadeInUp 0.2s ease-out forwards;
+    animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
