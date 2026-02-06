@@ -13,7 +13,7 @@ import {
   ExternalLink,
   ChevronRight,
   Globe,
-  Loader2,
+
   ArrowRight
 } from 'lucide-react';
 import clsx from 'clsx';
@@ -263,13 +263,7 @@ const DetailModal = ({ site, onClose }: { site: Site | null, onClose: () => void
               </a>
             </div>
 
-            {/* Footer / Meta */}
-            <div className="mt-12 pt-8 border-t border-gray-100 flex justify-center text-gray-400 text-sm">
-              <span className="flex items-center gap-1">
-                <Loader2 size={12} className="animate-spin" />
-                系统将自动记录此次访问
-              </span>
-            </div>
+
           </div>
         </div>
       </div>
@@ -473,10 +467,10 @@ export default function Home() {
 
         {/* Content Area */}
         <main id="main-scroll" className="flex-1 overflow-y-auto bg-[#FAFAFA] scroll-smooth">
-          <div className="container mx-auto max-w-7xl px-4 sm:px-8 py-10 min-h-full">
+          <div className="w-full px-4 sm:px-6 lg:px-8 py-10 min-h-full">
 
             {/* Search Hero */}
-            <div className="mb-20 mt-12 md:mt-16">
+            <div className="mb-16 mt-4 md:mt-6">
               <div className="text-center mb-16">
                 <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-6 tracking-tight">
                   探索思想理论的<span className="text-party-red inline-block relative">
@@ -508,7 +502,7 @@ export default function Home() {
                   <span className="text-xs font-normal text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{filteredSites.length}</span>
                 </div>
                 {filteredSites.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-5">
                     {filteredSites.map(site => (
                       <SiteCard key={site.id} site={site} onClick={() => setSelectedSite(site)} />
                     ))}
@@ -531,7 +525,7 @@ export default function Home() {
                         <h2 className="text-xl font-bold text-gray-900 font-serif tracking-tight">{cat}</h2>
                         <div className="h-px flex-1 bg-gray-100" />
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-5">
                         {catSites.map(site => (
                           <SiteCard key={site.id} site={site} onClick={() => setSelectedSite(site)} />
                         ))}
