@@ -73,11 +73,21 @@ const SidebarItem = ({
   isActive: boolean;
   onClick: () => void;
 }) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick();
+    }
+  };
+
   return (
     <button
       onClick={onClick}
+      onKeyDown={handleKeyDown}
+      aria-current={isActive ? 'true' : 'false'}
+      aria-label={`跳转到 ${category} 分类`}
       className={clsx(
-        "group w-full flex items-center justify-between px-4 py-3.5 text-sm transition-all duration-200 outline-none relative",
+        "group w-full flex items-center justify-between px-4 py-3.5 text-sm transition-all duration-200 relative focus-visible:ring-2 focus-visible:ring-party-red focus-visible:ring-offset-2",
         isActive
           ? "text-party-red font-semibold bg-red-50/50"
           : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
@@ -85,31 +95,43 @@ const SidebarItem = ({
     >
       <div className="flex items-center">
         {isActive && (
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-party-red rounded-r-full shadow-sm" />
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-party-red rounded-r-full shadow-sm" aria-hidden="true" />
         )}
-        <span className={clsx("ml-2 transition-colors", isActive ? "text-party-red" : "text-gray-400 group-hover:text-gray-500")}>
+        <span className={clsx("ml-2 transition-colors", isActive ? "text-party-red" : "text-gray-400 group-hover:text-gray-500")} aria-hidden="true">
           {React.createElement(getCategoryIconComponent(category), { size: 16 })}
         </span>
         <span className="ml-3 tracking-wide">{category}</span>
       </div>
-      {isActive && <ChevronRight size={14} className="text-party-red/60" />}
+      {isActive && <ChevronRight size={14} className="text-party-red/60" aria-hidden="true" />}
     </button>
   );
 };
 
 // 2. SiteCard - "Index Card" Aesthetic (Updated: Icon + Title in one row)
 const SiteCard = ({ site, onClick }: { site: Site, onClick: () => void }) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick();
+    }
+  };
+
   return (
     <div
       onClick={onClick}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      aria-label={`查看 ${site.name} 详情`}
       className="group relative bg-white rounded-xl p-5 cursor-pointer 
                  border border-gray-100 shadow-card hover:shadow-card-hover hover:border-red-100/50
-                 transition-all duration-300 ease-out hover:-translate-y-1 overflow-hidden"
+                 transition-all duration-200 ease-out hover:-translate-y-1 overflow-hidden
+                 focus-visible:ring-2 focus-visible:ring-party-red focus-visible:ring-offset-2"
     >
       <div className="flex items-center mb-3">
         {/* Icon Container - Subtle & Elegant */}
         <div className="w-10 h-10 rounded-lg bg-gray-50 text-gray-600 group-hover:bg-party-red-soft group-hover:text-party-red 
-                        flex items-center justify-center transition-colors duration-300 flex-shrink-0">
+                        flex items-center justify-center transition-colors duration-200 flex-shrink-0" aria-hidden="true">
           {React.createElement(getCategoryIconComponent(site.category), { size: 20 })}
         </div>
 
@@ -141,7 +163,7 @@ const SiteCard = ({ site, onClick }: { site: Site, onClick: () => void }) => {
       </div>
 
       {/* Bottom Decoration line for visual weight */}
-      <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-party-red/0 to-transparent group-hover:via-party-red/40 transition-all duration-500" />
+      <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-party-red/0 to-transparent group-hover:via-party-red/40 transition-all duration-500" aria-hidden="true" />
     </div>
   );
 };
@@ -416,10 +438,14 @@ export default function Home() {
 
   return (
     <div className="h-screen w-full bg-gray-50 flex flex-col text-gray-900 font-sans selection:bg-red-100 selection:text-party-red overflow-hidden">
+      {/* Skip to content link for accessibility */}
+      <a href="#main-content" className="skip-link">
+        跳到主内容
+      </a>
 
       {/* 1. Global Header - Glassmorphism */}
-      <header className="flex-none h-16 px-6 lg:px-10 flex items-center justify-between border-b border-gray-200/60 bg-white/80 backdrop-blur-md z-30">
-        <div className="flex items-center gap-3 cursor-pointer group" onClick={() => { setSearchQuery(''); if (categories.length) scrollToCategory(categories[0]); }}>
+      <header className="flex-none h-16 px-6 lg:px-10 flex items-center justify-between border-b border-gray-200/60 bg-white/80 backdrop-blur-md z-30" role="banner">
+        <div className="flex items-center gap-3 cursor-pointer group" onClick={() => { setSearchQuery(''); document.getElementById('main-scroll')?.scrollTo({ top: 0, behavior: 'smooth' }); }}>
           <div className="w-8 h-8 rounded-lg bg-party-red text-white flex items-center justify-center shadow-lg shadow-party-red/20 group-hover:scale-105 transition-transform duration-200">
             <BookOpen size={18} />
           </div>
@@ -466,8 +492,8 @@ export default function Home() {
         </aside>
 
         {/* Content Area */}
-        <main id="main-scroll" className="flex-1 overflow-y-auto bg-[#FAFAFA] scroll-smooth">
-          <div className="w-full px-4 sm:px-6 lg:px-8 py-10 min-h-full">
+        <main id="main-scroll" className="flex-1 overflow-y-auto bg-[#FAFAFA] scroll-smooth" role="main">
+          <div id="main-content" className="w-full px-4 sm:px-6 lg:px-8 py-10 min-h-full" tabIndex={-1}>
 
             {/* Search Hero */}
             <div className="mb-16 mt-4 md:mt-6">
