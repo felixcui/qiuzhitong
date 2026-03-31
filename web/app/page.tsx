@@ -67,11 +67,13 @@ const ModalPortal = ({ children }: { children: React.ReactNode }) => {
 const SidebarItem = ({
   category,
   isActive,
-  onClick
+  onClick,
+  count
 }: {
   category: string;
   isActive: boolean;
   onClick: () => void;
+  count?: number;
 }) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -87,22 +89,34 @@ const SidebarItem = ({
       aria-current={isActive ? 'true' : 'false'}
       aria-label={`跳转到 ${category} 分类`}
       className={clsx(
-        "group w-full flex items-center justify-between px-4 py-3.5 text-sm transition-all duration-200 relative focus-visible:ring-2 focus-visible:ring-party-red focus-visible:ring-offset-2",
+        "group w-full flex items-center justify-between px-4 py-3 text-sm transition-all duration-200 relative focus-visible:ring-2 focus-visible:ring-party-red focus-visible:ring-offset-2 rounded-lg mx-0",
         isActive
-          ? "text-party-red font-semibold bg-red-50/50"
-          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+          ? "text-party-red font-semibold bg-red-50/60"
+          : "text-gray-600 hover:bg-[#F0EBE4]/60 hover:text-gray-900"
       )}
     >
       <div className="flex items-center">
         {isActive && (
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-party-red rounded-r-full shadow-sm" aria-hidden="true" />
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-gradient-to-b from-party-red to-party-red/40 rounded-r-full" aria-hidden="true" />
         )}
         <span className={clsx("ml-2 transition-colors", isActive ? "text-party-red" : "text-gray-400 group-hover:text-gray-500")} aria-hidden="true">
-          {React.createElement(getCategoryIconComponent(category), { size: 16 })}
+          {React.createElement(getCategoryIconComponent(category), { size: 15 })}
         </span>
-        <span className="ml-3 tracking-wide">{category}</span>
+        <span className="ml-2.5 tracking-wide">{category}</span>
       </div>
-      {isActive && <ChevronRight size={14} className="text-party-red/60" aria-hidden="true" />}
+      <div className="flex items-center gap-1.5">
+        {count !== undefined && (
+          <span className={clsx(
+            "text-xs px-1.5 py-0.5 rounded-full tabular-nums font-medium",
+            isActive
+              ? "bg-party-red/10 text-party-red"
+              : "bg-gray-100 text-gray-400 group-hover:bg-gray-200"
+          )}>
+            {count}
+          </span>
+        )}
+        {isActive && <ChevronRight size={13} className="text-party-red/50" aria-hidden="true" />}
+      </div>
     </button>
   );
 };
@@ -123,16 +137,21 @@ const SiteCard = ({ site, onClick }: { site: Site, onClick: () => void }) => {
       role="button"
       tabIndex={0}
       aria-label={`查看 ${site.name} 详情`}
-      className="group relative bg-white rounded-xl p-5 cursor-pointer 
-                 border border-gray-100 shadow-card hover:shadow-card-hover hover:border-red-100/50
-                 transition-all duration-200 ease-out hover:-translate-y-1 overflow-hidden
+      className="group relative bg-white rounded-xl p-5 cursor-pointer
+                 border border-[#EDE8E1] shadow-card hover:shadow-card-hover hover:border-red-100
+                 transition-all duration-200 ease-out hover:-translate-y-1.5 overflow-hidden
                  focus-visible:ring-2 focus-visible:ring-party-red focus-visible:ring-offset-2"
     >
+      {/* Left edge accent */}
+      <div className="absolute left-0 top-4 w-0.5 h-12 rounded-r-full opacity-0
+                      group-hover:opacity-100 bg-gradient-to-b from-party-red to-party-red/20
+                      transition-all duration-300" aria-hidden="true" />
+
       <div className="flex items-center mb-3">
-        {/* Icon Container - Subtle & Elegant */}
-        <div className="w-10 h-10 rounded-lg bg-gray-50 text-gray-600 group-hover:bg-party-red-soft group-hover:text-party-red 
-                        flex items-center justify-center transition-colors duration-200 flex-shrink-0" aria-hidden="true">
-          {React.createElement(getCategoryIconComponent(site.category), { size: 20 })}
+        {/* Icon Container */}
+        <div className="w-10 h-10 rounded-lg bg-gray-50 text-gray-500 group-hover:bg-red-50 group-hover:text-party-red
+                        flex items-center justify-center transition-colors duration-200 flex-shrink-0 border border-gray-100 group-hover:border-red-100" aria-hidden="true">
+          {React.createElement(getCategoryIconComponent(site.category), { size: 19 })}
         </div>
 
         {/* Title */}
@@ -147,10 +166,10 @@ const SiteCard = ({ site, onClick }: { site: Site, onClick: () => void }) => {
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="p-1 text-gray-300 group-hover:text-party-red hover:bg-red-50 rounded transition-colors block"
+            className="p-1.5 text-gray-300 group-hover:text-party-red hover:bg-red-50 rounded-lg transition-colors block"
             title="直接访问"
           >
-            <ExternalLink size={14} />
+            <ExternalLink size={13} />
           </a>
         </div>
       </div>
@@ -162,8 +181,17 @@ const SiteCard = ({ site, onClick }: { site: Site, onClick: () => void }) => {
         </p>
       </div>
 
-      {/* Bottom Decoration line for visual weight */}
-      <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-party-red/0 to-transparent group-hover:via-party-red/40 transition-all duration-500" aria-hidden="true" />
+      {/* Bottom accent line */}
+      <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-party-red/0 to-transparent group-hover:via-party-red/30 transition-all duration-500" aria-hidden="true" />
+
+      {/* Tag badge - show on hover */}
+      {site.tags && site.tags.length > 0 && (
+        <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <span className="text-[10px] px-1.5 py-0.5 bg-red-50 text-party-red/70 rounded-full font-medium border border-red-100/50">
+            {site.tags[0]}
+          </span>
+        </div>
+      )}
     </div>
   );
 };
@@ -184,8 +212,8 @@ const SearchBar = ({
 }) => {
   return (
     <div className="relative w-full max-w-2xl mx-auto group">
-      {/* Engine Tabs */}
-      <div className="absolute -top-10 left-0 flex space-x-1 p-1">
+      {/* Engine Tabs - Segmented Control Style */}
+      <div className="absolute -top-11 left-0 flex bg-white/70 backdrop-blur-sm border border-[#EDE8E1] rounded-lg p-1 gap-0.5">
         {[
           { id: 'site', label: '站内检索' },
           { id: 'baidu', label: '百度' },
@@ -199,7 +227,7 @@ const SearchBar = ({
               "px-3 py-1 text-xs font-medium rounded-md transition-all duration-200",
               engine === e.id
                 ? "bg-party-red text-white shadow-sm"
-                : "text-gray-500 hover:text-gray-800 hover:bg-gray-100"
+                : "text-gray-500 hover:text-gray-800 hover:bg-gray-100/80"
             )}
           >
             {e.label}
@@ -207,9 +235,9 @@ const SearchBar = ({
         ))}
       </div>
 
-      <div className="relative flex items-center bg-white rounded-2xl shadow-card hover:shadow-float transition-shadow duration-300 border border-gray-100 focus-within:border-party-red/30 focus-within:ring-4 focus-within:ring-party-red/5">
+      <div className="relative flex items-center bg-white rounded-2xl shadow-card hover:shadow-float transition-shadow duration-300 border border-[#EDE8E1] focus-within:border-party-red/25 focus-within:ring-4 focus-within:ring-party-red/[0.07] focus-within:shadow-[0_0_0_1px_rgba(200,25,12,0.15),0_8px_32px_-4px_rgba(200,25,12,0.08)]">
         <div className="pl-5 text-gray-400 group-focus-within:text-party-red transition-colors">
-          <Search size={22} />
+          <Search size={20} />
         </div>
         <input
           type="text"
@@ -222,7 +250,7 @@ const SearchBar = ({
         <div className="absolute right-2.5 flex items-center">
           {value && (
             <button onClick={() => onChange('')} className="p-2 text-gray-300 hover:text-gray-500 transition-colors mr-1">
-              <X size={16} />
+              <X size={15} />
             </button>
           )}
           <button
@@ -244,28 +272,34 @@ const DetailModal = ({ site, onClose }: { site: Site | null, onClose: () => void
   return (
     <ModalPortal>
       <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6" role="dialog" aria-modal="true">
-        <div className="absolute inset-0 bg-gray-900/20 backdrop-blur-sm transition-opacity" onClick={onClose} />
-        <div className="relative bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden animate-scale-in flex flex-col max-h-[90vh]">
+        <div className="absolute inset-0 bg-gray-900/25 backdrop-blur-sm transition-opacity" onClick={onClose} />
+        <div className="relative bg-white w-full max-w-2xl rounded-2xl shadow-float overflow-hidden animate-scale-in flex flex-col max-h-[90vh]">
 
-          {/* Header Bar */}
-          <div className="h-1.5 w-full bg-party-red" />
+          {/* Header Gradient Bar */}
+          <div className="h-1 w-full bg-gradient-to-r from-party-red via-party-red to-party-red/60" />
           <div className="absolute top-4 right-4 z-10">
-            <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-700 bg-white/50 hover:bg-gray-100 rounded-full transition-colors backdrop-blur">
-              <X size={20} />
+            <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-700 bg-white/70 hover:bg-gray-100 rounded-full transition-colors backdrop-blur">
+              <X size={18} />
             </button>
           </div>
 
           <div className="p-8 md:p-10 overflow-y-auto">
             <div className="flex flex-col items-center text-center">
-              <div className="w-20 h-20 bg-party-red-soft text-party-red rounded-2xl flex items-center justify-center mb-6 shadow-inner">
-                {React.createElement(getCategoryIconComponent(site.category), { size: 40 })}
+              <div className="w-18 h-18 bg-gradient-to-br from-red-50 to-red-50/60 text-party-red rounded-2xl flex items-center justify-center mb-5 shadow-sm border border-red-100/60"
+                   style={{width: '72px', height: '72px'}}>
+                {React.createElement(getCategoryIconComponent(site.category), { size: 36 })}
               </div>
 
               <h2 className="text-3xl font-bold font-serif text-gray-900 mb-2">{site.name}</h2>
-              <div className="flex items-center gap-2 mb-8">
-                <span className="px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-500 text-xs font-medium border border-gray-200">
+              <div className="flex items-center gap-2 mb-8 flex-wrap justify-center">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#F8F5F0] text-gray-500 text-xs font-medium border border-[#EDE8E1]">
                   {site.category}
                 </span>
+                {site.tags && site.tags.slice(0, 3).map(tag => (
+                  <span key={tag} className="px-2.5 py-0.5 rounded-full bg-red-50/60 text-party-red/70 text-xs font-medium border border-red-100/50">
+                    {tag}
+                  </span>
+                ))}
               </div>
 
               <div className="w-full max-w-lg mb-10">
@@ -278,10 +312,10 @@ const DetailModal = ({ site, onClose }: { site: Site | null, onClose: () => void
                 href={site.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-center gap-2 px-10 py-3.5 bg-party-red text-white text-base font-medium rounded-xl hover:bg-party-red-hover transition-all duration-200 shadow-lg shadow-party-red/20 hover:-translate-y-0.5 w-full sm:w-auto"
+                className="group flex items-center justify-center gap-2 px-10 py-3.5 bg-party-red text-white text-base font-medium rounded-xl hover:bg-party-red-hover transition-all duration-200 shadow-lg shadow-party-red/15 hover:-translate-y-0.5 w-full sm:w-auto"
               >
                 <span>访问官方网站</span>
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                <ArrowRight size={17} className="group-hover:translate-x-1 transition-transform" />
               </a>
             </div>
 
@@ -334,9 +368,10 @@ const CategorySection = ({
   return (
     <div id={id} className="scroll-mt-6">
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-1.5 h-6 bg-party-red rounded-full" />
+        <div className="w-1 h-7 bg-gradient-to-b from-party-red to-party-red/30 rounded-full" />
         <h2 className="text-xl font-bold text-gray-900 font-serif tracking-tight">{category}</h2>
-        <div className="h-px flex-1 bg-gray-100" />
+        <span className="text-xs text-gray-400 bg-[#F0EBE4] px-2 py-0.5 rounded-full font-medium">{sites.length}</span>
+        <div className="h-px flex-1 bg-gradient-to-r from-[#EDE8E1] to-transparent" />
         {!expanded && shouldShowMore && (
           <button
             onClick={() => setExpanded(true)}
@@ -365,45 +400,45 @@ const AboutModal = ({ onClose }: { onClose: () => void }) => {
     <ModalPortal>
       <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
         <div className="absolute inset-0 bg-gray-900/30 backdrop-blur-sm" onClick={onClose} />
-        <div className="relative bg-white rounded-2xl shadow-float w-full max-w-lg p-8 animate-fade-in-up">
+        <div className="relative bg-white rounded-2xl shadow-float w-full max-w-lg p-8 animate-fade-in-up border border-[#EDE8E1]">
 
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-party-red text-white rounded-lg flex items-center justify-center font-serif font-bold text-xl shadow-md">
+              <div className="w-10 h-10 bg-party-red text-white rounded-xl flex items-center justify-center font-serif font-bold text-xl shadow-lg shadow-party-red/20">
                 求
               </div>
               <h2 className="text-2xl font-bold font-serif text-gray-900">求知汇</h2>
             </div>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-              <X size={24} />
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 p-1.5 hover:bg-gray-100 rounded-lg transition-colors">
+              <X size={22} />
             </button>
           </div>
 
-          <div className="space-y-6 text-gray-600">
+          <div className="space-y-5 text-gray-600">
             <p className="text-lg leading-relaxed font-serif text-gray-800">
               专注于思想理论领域的垂直导航平台。
             </p>
-            <p className="leading-relaxed">
+            <p className="leading-relaxed text-sm">
               在一个信息碎片化的时代，我们将<strong className="text-party-red font-medium">权威</strong>、<strong className="text-party-red font-medium">经典</strong>与<strong className="text-party-red font-medium">深度</strong>重新聚合。为高校师生、研究员及理论爱好者提供一方纯净的学术检索天地。
             </p>
 
-            <div className="grid grid-cols-3 gap-4 py-4">
+            <div className="grid grid-cols-3 gap-3 py-2">
               {[
                 { l: '权威', d: '严选官方信源' },
                 { l: '极致', d: '零广告干扰' },
                 { l: '高效', d: '一键直达' }
               ].map(i => (
-                <div key={i.l} className="text-center p-3 bg-gray-50 rounded-lg">
-                  <div className="text-party-red font-bold mb-1">{i.l}</div>
+                <div key={i.l} className="text-center p-3 bg-[#F8F5F0] rounded-xl border border-[#EDE8E1]">
+                  <div className="text-party-red font-bold mb-1 font-serif text-base">{i.l}</div>
                   <div className="text-xs text-gray-400">{i.d}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-gray-100 flex justify-between items-center text-xs text-gray-400">
+          <div className="mt-7 pt-5 border-t border-[#EDE8E1] flex justify-between items-center text-xs text-gray-400">
             <span>Version 1.0.0 (Beta)</span>
-            <span>Designed for Academic Research</span>
+            <span className="font-serif italic">Seeking Truth from Facts</span>
           </div>
         </div>
       </div>
@@ -417,6 +452,16 @@ const AboutModal = ({ onClose }: { onClose: () => void }) => {
 export default function Home() {
   // Derive Categories once
   const categories = useMemo(() => Array.from(new Set(sitesData.map((s: Site) => s.category))), []);
+  const totalCount = sitesData.length;
+
+  // Category site counts
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const s of sitesData as Site[]) {
+      counts[s.category] = (counts[s.category] || 0) + 1;
+    }
+    return counts;
+  }, []);
 
   const [activeCategory, setActiveCategory] = useState<string>(() => {
     // Initialize with first category
@@ -502,27 +547,31 @@ export default function Home() {
   }, [searchQuery, searchEngine]);
 
   return (
-    <div className="h-screen w-full bg-gray-50 flex flex-col text-gray-900 font-sans selection:bg-red-100 selection:text-party-red overflow-hidden">
+    <div className="h-screen w-full flex flex-col text-gray-900 font-sans selection:bg-red-50 selection:text-party-red overflow-hidden">
       {/* Skip to content link for accessibility */}
       <a href="#main-content" className="skip-link">
         跳到主内容
       </a>
 
       {/* 1. Global Header - Glassmorphism */}
-      <header className="flex-none h-16 px-6 lg:px-10 flex items-center justify-between border-b border-gray-200/60 bg-white/80 backdrop-blur-md z-30" role="banner">
+      <header className="flex-none h-16 px-6 lg:px-10 flex items-center justify-between border-b border-[#E8E3DC]/80 bg-white/85 backdrop-blur-md z-30" role="banner">
         <div className="flex items-center gap-3 cursor-pointer group" onClick={() => { setSearchQuery(''); document.getElementById('main-scroll')?.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-          <div className="w-8 h-8 rounded-lg bg-party-red text-white flex items-center justify-center shadow-lg shadow-party-red/20 group-hover:scale-105 transition-transform duration-200">
-            <BookOpen size={18} />
+          <div className="w-8 h-8 rounded-xl bg-party-red text-white flex items-center justify-center shadow-lg shadow-party-red/25 group-hover:scale-105 transition-transform duration-200">
+            <BookOpen size={17} />
           </div>
           <span className="font-serif font-bold text-xl tracking-tight text-gray-900 group-hover:text-party-red transition-colors">
             求知汇 <span className="text-xs font-sans font-normal text-gray-400 ml-1 tracking-normal">Qiuzhi Hui</span>
           </span>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-[#F8F5F0] rounded-full border border-[#EDE8E1] text-xs text-gray-500">
+            <span className="font-medium text-gray-700">{totalCount}</span>
+            <span>个资源</span>
+          </div>
           <button
             onClick={() => setShowAbout(true)}
-            className="text-sm font-medium text-gray-500 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="text-sm font-medium text-gray-500 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-[#F0EBE4] transition-colors"
           >
             关于我们
           </button>
@@ -537,9 +586,10 @@ export default function Home() {
       <div className="flex-1 flex overflow-hidden">
 
         {/* Sidebar - Fixed width, refined scroll */}
-        <aside className="w-64 flex-none border-r border-gray-200 bg-white/50 backdrop-blur-sm hidden lg:flex flex-col h-full z-20">
-          <div className="p-5">
-            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest pl-4 mb-2">资源目录</h3>
+        <aside className="w-64 flex-none border-r border-[#E8E3DC] bg-white/60 backdrop-blur-sm hidden lg:flex flex-col h-full z-20">
+          <div className="px-5 pt-5 pb-3">
+            <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-widest pl-2 mb-1">资源目录</h3>
+            <p className="text-[11px] text-gray-400 pl-2">{categories.length} 个分类 · {totalCount} 个资源</p>
           </div>
           <nav className="flex-1 overflow-y-auto px-3 pb-6 space-y-0.5 custom-scrollbar">
             {categories.map(cat => (
@@ -551,19 +601,23 @@ export default function Home() {
               />
             ))}
           </nav>
-          <div className="p-4 border-t border-gray-100 text-center">
+          <div className="p-4 border-t border-[#EDE8E1] text-center">
             <span className="text-xs text-gray-300 font-serif italic">Seeking Truth from Facts</span>
           </div>
         </aside>
 
         {/* Content Area */}
-        <main id="main-scroll" className="flex-1 overflow-y-auto bg-[#FAFAFA] scroll-smooth" role="main">
+        <main id="main-scroll" className="flex-1 overflow-y-auto scroll-smooth" role="main" style={{background: 'var(--background)'}}>
           <div id="main-content" className="w-full px-4 sm:px-6 lg:px-8 py-10 min-h-full" tabIndex={-1}>
 
             {/* Search Hero */}
             <div className="mb-16 mt-4 md:mt-6">
-              <div className="text-center mb-16">
-                <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-6 tracking-tight">
+              <div className="relative text-center mb-16">
+                {/* Decorative background text */}
+                <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center text-[160px] md:text-[200px] font-serif font-bold text-party-red/[0.025] select-none pointer-events-none leading-none overflow-hidden">
+                  求知
+                </div>
+                <h1 className="relative text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-5 tracking-tight">
                   探索思想理论的<span className="text-party-red inline-block relative">
                     海洋
                     <svg className="absolute w-full h-2 bottom-0 left-0 text-party-red/20 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
@@ -571,9 +625,14 @@ export default function Home() {
                     </svg>
                   </span>
                 </h1>
-                <p className="text-gray-500 max-w-lg mx-auto text-base md:text-lg leading-relaxed">
+                <p className="relative text-gray-500 max-w-lg mx-auto text-base md:text-lg leading-relaxed mb-5">
                   汇集权威机构、核心期刊、经典著作与前沿数据库
                 </p>
+                <div className="relative flex items-center justify-center gap-5 text-sm text-gray-400 mb-2">
+                  <span><strong className="text-gray-700 font-semibold">{totalCount}</strong> 个精选资源</span>
+                  <span className="text-gray-200">·</span>
+                  <span><strong className="text-gray-700 font-semibold">{categories.length}</strong> 个专业分类</span>
+                </div>
               </div>
               <SearchBar
                 value={searchQuery}

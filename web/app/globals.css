@@ -2,22 +2,31 @@
 
 :root {
     /* Ultra-refined Palette */
-    --background: #F9FAFB;
+    --background: #F8F5F0;
     --foreground: #111827;
     /* Darker gray for better contrast */
 
     /* Modern Party Red - slightly deeper, more authoritative */
-    --party-red: #D91F11;
-    --party-red-hover: #B91C1C;
+    --party-red: #C8190C;
+    --party-red-hover: #A31409;
+    --party-red-deep: #8B1007;
     --party-red-soft: #FEF2F2;
     /* red-50 */
 
-    /* Accent Gold - adjusted for harmony */
-    --party-gold: #F59E0B;
+    /* Accent Gold - deep, warm gold */
+    --party-gold: #C9861C;
+    --party-gold-soft: #FDF8EF;
+
+    /* Surface colors */
+    --surface-primary: #FFFFFF;
+    --surface-secondary: #F8F5F0;
+    --surface-card: #FFFFFE;
 
     /* Neutral scale for UI elements */
-    --border-color: #E5E7EB;
+    --border-color: #E8E3DC;
+    --border-subtle: #F0EBE4;
     --text-secondary: #6B7280;
+    --text-muted: #9CA3AF;
 }
 
 @theme inline {
@@ -25,23 +34,32 @@
     --color-foreground: var(--foreground);
     --color-party-red: var(--party-red);
     --color-party-red-hover: var(--party-red-hover);
+    --color-party-red-deep: var(--party-red-deep);
     --color-party-red-soft: var(--party-red-soft);
     --color-party-gold: var(--party-gold);
+    --color-party-gold-soft: var(--party-gold-soft);
+    --color-surface-primary: var(--surface-primary);
+    --color-surface-secondary: var(--surface-secondary);
+    --color-surface-card: var(--surface-card);
     --color-border-subtle: var(--border-color);
     --color-text-secondary: var(--text-secondary);
+    --color-text-muted: var(--text-muted);
 
     --font-serif: var(--font-noto-serif), "Songti SC", "Noto Serif SC", STSong, serif;
     --font-sans: var(--font-noto-sans), -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 
-    --shadow-soft: 0 2px 8px -2px rgba(0, 0, 0, 0.05);
-    --shadow-card: 0 1px 2px -1px rgba(0, 0, 0, 0.05), 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-    --shadow-card-hover: 0 10px 30px -5px rgba(222, 41, 16, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
-    --shadow-float: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-soft: 0 2px 8px -2px rgba(0, 0, 0, 0.06);
+    --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+    --shadow-card-hover: 0 12px 40px -8px rgba(200, 25, 12, 0.14), 0 4px 8px -2px rgba(0, 0, 0, 0.05);
+    --shadow-float: 0 20px 25px -5px rgba(0, 0, 0, 0.12), 0 10px 10px -5px rgba(0, 0, 0, 0.05);
+    --shadow-sidebar: inset -1px 0 0 rgba(0,0,0,0.04);
 }
 
 /* Base Reset & Typography */
 body {
-    background: var(--background);
+    background-color: var(--background);
+    background-image: radial-gradient(circle, rgba(180, 140, 100, 0.08) 1px, transparent 1px);
+    background-size: 28px 28px;
     color: var(--foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -49,14 +67,14 @@ body {
 }
 
 ::selection {
-    background-color: rgba(222, 41, 16, 0.15);
+    background-color: rgba(200, 25, 12, 0.12);
     color: var(--party-red);
 }
 
 /* Custom Scrollbar - Minimalist */
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -64,12 +82,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #D1D5DB;
+    background: #D1C9BF;
     border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #9CA3AF;
+    background: #A89F94;
 }
 
 /* Utility Classes */
@@ -87,7 +105,7 @@ body {
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(12px);
     }
 
     to {
@@ -97,23 +115,34 @@ body {
 }
 
 .animate-fade-in-up {
-    animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes scaleIn {
     from {
         opacity: 0;
-        transform: scale(0.98);
+        transform: scale(0.97) translateY(4px);
     }
 
     to {
         opacity: 1;
-        transform: scale(1);
+        transform: scale(1) translateY(0);
     }
 }
 
 .animate-scale-in {
-    animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: scaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+    background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.6) 50%, transparent 75%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
 }
 
 /* Accessibility: Respect prefers-reduced-motion */
@@ -132,7 +161,12 @@ body {
     [class*="backdrop-blur"] {
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
-        background: rgba(255, 255, 255, 0.95) !important;
+        background: rgba(255, 255, 255, 0.97) !important;
+    }
+
+    /* Disable background pattern for performance */
+    body {
+        background-image: none !important;
     }
 }
 
@@ -145,9 +179,11 @@ body {
     color: white;
     padding: 8px 16px;
     text-decoration: none;
-    border-radius: 0 0 4px 0;
+    border-radius: 0 0 6px 0;
     z-index: 1000;
     transition: top 0.2s;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .skip-link:focus {
@@ -159,4 +195,15 @@ body {
     outline: 2px solid var(--party-red);
     outline-offset: 2px;
     border-radius: 4px;
+}
+
+/* Card hover transition utility */
+.card-lift {
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.2s ease;
+}
+
+.card-lift:hover {
+    transform: translateY(-2px);
 }
