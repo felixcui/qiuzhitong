@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import sitesData from '../lib/sites.json';
 import {
   BookOpen,
@@ -294,7 +294,72 @@ const DetailModal = ({ site, onClose }: { site: Site | null, onClose: () => void
 };
 
 
-// 5. About Modal - Elegant Typography
+// 5. Category Section - Show max 2 rows, expandable
+const CategorySection = ({
+  id,
+  category,
+  sites,
+  onSelectSite
+}: {
+  id: string;
+  category: string;
+  sites: Site[];
+  onSelectSite: (site: Site) => void;
+}) => {
+  const [expanded, setExpanded] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(6);
+  const gridRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+
+    const updateVisibleCount = () => {
+      const styles = window.getComputedStyle(grid);
+      const columns = styles.gridTemplateColumns.split(' ').filter(Boolean).length || 1;
+      setVisibleCount(columns * 2);
+    };
+
+    updateVisibleCount();
+
+    const resizeObserver = new ResizeObserver(updateVisibleCount);
+    resizeObserver.observe(grid);
+
+    return () => resizeObserver.disconnect();
+  }, []);
+
+  const shouldShowMore = sites.length > visibleCount;
+  const displayedSites = expanded ? sites : sites.slice(0, visibleCount);
+
+  return (
+    <div id={id} className="scroll-mt-6">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-1.5 h-6 bg-party-red rounded-full" />
+        <h2 className="text-xl font-bold text-gray-900 font-serif tracking-tight">{category}</h2>
+        <div className="h-px flex-1 bg-gray-100" />
+        {!expanded && shouldShowMore && (
+          <button
+            onClick={() => setExpanded(true)}
+            className="flex-none inline-flex items-center gap-1 text-sm font-medium text-gray-400 hover:text-party-red transition-colors"
+          >
+            查看更多
+            <ChevronRight size={14} />
+          </button>
+        )}
+      </div>
+      <div
+        ref={gridRef}
+        className="grid gap-5 grid-cols-[repeat(auto-fill,minmax(220px,1fr))]"
+      >
+        {displayedSites.map(site => (
+          <SiteCard key={site.id} site={site} onClick={() => onSelectSite(site)} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// 6. About Modal - Elegant Typography
 const AboutModal = ({ onClose }: { onClose: () => void }) => {
   return (
     <ModalPortal>
@@ -545,18 +610,13 @@ export default function Home() {
                 {categories.map(cat => {
                   const catSites = sitesData.filter((s: Site) => s.category === cat);
                   return (
-                    <div key={cat} id={`cat-${cat}`} className="scroll-mt-6">
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className="w-1.5 h-6 bg-party-red rounded-full" />
-                        <h2 className="text-xl font-bold text-gray-900 font-serif tracking-tight">{cat}</h2>
-                        <div className="h-px flex-1 bg-gray-100" />
-                      </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-5">
-                        {catSites.map(site => (
-                          <SiteCard key={site.id} site={site} onClick={() => setSelectedSite(site)} />
-                        ))}
-                      </div>
-                    </div>
+                    <CategorySection
+                      key={cat}
+                      id={`cat-${cat}`}
+                      category={cat}
+                      sites={catSites}
+                      onSelectSite={(site) => setSelectedSite(site)}
+                    />
                   );
                 })}
               </div>
